@@ -1,9 +1,36 @@
 <div class="container">
-  <h1 class="page-header text-center">{{title}}</h1>
+  <h3>{{title}}</h3>
    <div id="row">
+
+     {{#if isEditing}}
+        <form>
+          <div class="form-group">
+            <label for="text">Enter your question in full: </label>
+            {{textarea value=question-description id="question-description" class="form-control"}}
+            <label for="text">Who's asking?: </label>
+            {{input value=question-author id="question-author" class="form-control"}}
+          </div>
+
+          <button class="btn btn-primary" {{action 'save'}}>Save</button>
+        </form>
+
+      {{else}}
+        <h3>{{author}}</h3>
+        <h3>{{description}}</h3>
+
+        <button class="btn btn-primary" {{action 'edit'}}>Edit</button>
+        <button class="btn btn-danger" {{action 'delete'}}>Delete</button>
+
+      {{/if}}
+
+      {{outlet}}
+
      <ul>
-       {{#each answer in answers}}
-         <li>{{#link-to 'answer' answer.id}}{{answer.description}}{{/link-to}}</li>
+       {{#each answer in answers itemController="answer"}}
+         <li>
+           {{answer.description}}
+           <button class="btn btn-xs btn-danger" {{action 'delete'}}>Delete</button>
+          </li>
        {{/each}}
      </ul>
    </div>
@@ -11,5 +38,3 @@
      {{#link-to 'new-answer' classNames="btn btn-primary"}}Add an Answer{{/link-to}}
    </div>
 </div>
-
-{{outlet}}
